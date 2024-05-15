@@ -3,7 +3,7 @@ from rest_framework.response import Response
 from django.shortcuts import render
 
 from vendor_app.serializer import VendorInfoSerializer,OrderTrackingSerializer
-from vendor_app.models import VendorInfo,OrderTracking
+from vendor_app.models import VendorInfo,PurchaseOrder
 
 #   Vendor Profile Management
 
@@ -82,12 +82,12 @@ class PurchaseOrderTracking(APIView):
         
         # Get all orders of a particular vendor based on vendor id
         if vendor_id:
-            order_detail = OrderTracking.objects.filter(vender_reference_id=vendor_id)
+            order_detail = PurchaseOrder.objects.filter(vender_reference_id=vendor_id)
             
             if not order_detail :
                 return Response({'msg' : f'vendor id {vendor_id} has no order'})
         else:
-            order_detail = OrderTracking.objects.all()
+            order_detail = PurchaseOrder.objects.all()
             
         serialized_order_data = OrderTrackingSerializer(order_detail, many=True)
         return Response(serialized_order_data.data)
@@ -105,8 +105,8 @@ class PurchaseOrderTrackingById(APIView):
     def get(self,request,purchase_order_id):
 
         try:
-            order_detail=OrderTracking.objects.get(purchase_order_number=purchase_order_id)
-        except OrderTracking.DoesNotExist:
+            order_detail=PurchaseOrder.objects.get(purchase_order_number=purchase_order_id)
+        except PurchaseOrder.DoesNotExist:
             return Response({'msg':f'No order of order number {purchase_order_id}'})
         serialized_purchase_order_data_= OrderTrackingSerializer(order_detail)
         return Response(serialized_purchase_order_data_.data)
@@ -114,8 +114,8 @@ class PurchaseOrderTrackingById(APIView):
     def put(self,request,purchase_order_id):
 
         try:
-            order_detail=OrderTracking.objects.get(purchase_order_number=purchase_order_id)
-        except OrderTracking.DoesNotExist:
+            order_detail=PurchaseOrder.objects.get(purchase_order_number=purchase_order_id)
+        except PurchaseOrder.DoesNotExist:
             return Response({'msg':f'No order of order number {purchase_order_id}'})
         
         serialized_purchase_order_data= OrderTrackingSerializer(order_detail,data=request.data)
@@ -128,8 +128,8 @@ class PurchaseOrderTrackingById(APIView):
     def delete(self,request,purchase_order_id):
 
         try:
-            order_detail=OrderTracking.objects.get(purchase_order_number=purchase_order_id)
-        except OrderTracking.DoesNotExist:
+            order_detail=PurchaseOrder.objects.get(purchase_order_number=purchase_order_id)
+        except PurchaseOrder.DoesNotExist:
             return Response({'msg':f'No order of order number {purchase_order_id}'})
         order_detail.delete()
         return Response({'msg':'Order deleted successfully'})
