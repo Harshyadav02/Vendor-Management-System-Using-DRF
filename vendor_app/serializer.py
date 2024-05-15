@@ -1,5 +1,5 @@
 from rest_framework.serializers import ModelSerializer
-from vendor_app.models import VendorInfo,OrderTracking
+from vendor_app.models import VendorInfo,PurchaseOrder
 class VendorInfoSerializer(ModelSerializer):
 
     class Meta:
@@ -9,5 +9,5 @@ class VendorInfoSerializer(ModelSerializer):
 class OrderTrackingSerializer(ModelSerializer):
 
     class Meta:
-        model=OrderTracking
+        model=PurchaseOrder
         fields= '__all__'
